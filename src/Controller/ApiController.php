@@ -36,6 +36,8 @@ class ApiController extends AbstractController
         $ptUtil = $em->getRepository('App\\Entity\\PurchaseType');
         $all = $ptUtil->findAll();
 
+        sleep(2);
+
         $return = [];
         if(count($all) > 0){
             /** @var PurchaseType $pu */
