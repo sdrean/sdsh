@@ -66,7 +66,7 @@ class ApiController extends AbstractController
 
         return new JsonResponse([
             'valid' => true,
-            'purchaseType' => $returnPT,
+            'purchaseTypes' => $returnPT,
             'receipt' => $returnReceipt
         ]);
     }
