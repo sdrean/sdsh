@@ -30,7 +30,7 @@ class Receipt
     /**
      * @ORM\Column(type="datetime")
      */
-    private $PurchaseDate;
+    private $purchaseDate;
 
     public function getId(): ?int
     {
@@ -49,6 +49,11 @@ class Receipt
         return $this;
     }
 
+    public function getPurchaseType(): ? PurchaseType
+    {
+        return $this->purchaseType;
+    }
+
     public function setPurchaseType(PurchaseType $purchaseType):self
     {
         $this->purchaseType = $purchaseType;
@@ -58,29 +63,13 @@ class Receipt
 
     public function getPurchaseDate(): ?\DateTimeInterface
     {
-        return $this->PurchaseDate;
+        return $this->purchaseDate;
     }
 
-    public function setPurchaseDate(\DateTimeInterface $PurchaseDate): self
+    public function setPurchaseDate(\DateTimeInterface $purchaseDate): self
     {
-        $this->PurchaseDate = $PurchaseDate;
+        $this->purchaseDate = $purchaseDate;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPurchase()
-    {
-        return $this->purchase;
-    }
-
-    /**
-     * @param mixed $purchase
-     */
-    public function setPurchase($purchase)
-    {
-        $this->purchase = $purchase;
     }
 }

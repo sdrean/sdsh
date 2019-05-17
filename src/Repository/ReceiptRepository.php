@@ -19,6 +19,18 @@ class ReceiptRepository extends ServiceEntityRepository
         parent::__construct($registry, Receipt::class);
     }
 
+    public function findReceiptByMonth($month = '')
+    {
+        if($month == ''){
+            $month = date('Y-m');
+        }
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.purchaseDate>=:pDate')
+            ->setParameter('pDate', new \DateTime($month.'-01'))
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Receipt[] Returns an array of Receipt objects
     //  */
