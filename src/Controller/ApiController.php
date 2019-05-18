@@ -140,7 +140,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/sendamount", name="send_amount")
+     * @Route("/sendamount", name="sendamount")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return JsonResponse
@@ -172,6 +172,12 @@ class ApiController extends AbstractController
         $em->persist($receipt);
         $em->flush();
 
-        return new JsonResponse(['valid' => true,'id' => $receipt->getId()]);
+        $return = [
+            'PurchaseType' => $receipt->getPurchaseType()->getPurchaseName(),
+            'PurchaseAmount' => $receipt->getAmount(),
+            'PurchaseDate' => $receipt->getPurchaseDate()->format('d/m/Y'),
+        ];
+
+        return new JsonResponse(['valid' => true,'result' => $return]);
     }
 }
