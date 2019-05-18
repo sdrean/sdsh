@@ -86,7 +86,12 @@ class ApiController extends AbstractController
 
         sleep(1);
 
-        $return = [];
+        $return = [
+            [
+                'PurchaseTypeId' => 0,
+                'PurchaseTypeName' => ''
+            ]
+        ];
         if(count($all) > 0){
             /** @var PurchaseType $pu */
             foreach($all as $pu){
