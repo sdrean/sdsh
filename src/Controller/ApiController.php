@@ -161,6 +161,8 @@ class ApiController extends AbstractController
         $params = array();
         $content = $request->getContent();
 
+        sleep(1);
+
         if (!empty($content))
         {
             $params = json_decode($content, true);
