@@ -35,7 +35,12 @@ class ApiController extends AbstractController
 
         sleep(1);
 
-        $returnPT = [];
+        $returnPT = [
+            [
+                'PurchaseTypeId' => 0,
+                'PurchaseTypeName' => 'Sélectionner un type'
+            ]
+        ];
         if(count($all) > 0){
             /** @var PurchaseType $pu */
             foreach($all as $pu){
@@ -89,7 +94,7 @@ class ApiController extends AbstractController
         $return = [
             [
                 'PurchaseTypeId' => 0,
-                'PurchaseTypeName' => ''
+                'PurchaseTypeName' => 'Sélectionner un type'
             ]
         ];
         if(count($all) > 0){
