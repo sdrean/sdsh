@@ -69,10 +69,14 @@ class ApiController extends AbstractController
             }
         }
 
+        $walletUtil = $em->getRepository('App\\Entity\\Wallet');
+        $amount = $walletUtil->findByMonth(date('Y-m'));
+
         return new JsonResponse([
             'valid' => true,
             'purchaseTypes' => $returnPT,
-            'receipt' => $returnReceipt
+            'receipt' => $returnReceipt,
+            'wallet_amount' => $amount
         ]);
     }
 
