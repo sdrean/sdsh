@@ -76,7 +76,7 @@ class ApiController extends AbstractController
             'valid' => true,
             'purchaseTypes' => $returnPT,
             'receipt' => $returnReceipt,
-            'wallet_amount' => $amount
+            'walletAmount' => $amount
         ]);
     }
 
