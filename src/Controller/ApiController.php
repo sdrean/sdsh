@@ -46,7 +46,8 @@ class ApiController extends AbstractController
             foreach($all as $pu){
                 $returnPT[] = [
                     'PurchaseTypeId' => $pu->getId(),
-                    'PurchaseTypeName' => $pu->getPurchaseName()
+                    'PurchaseTypeName' => $pu->getPurchaseName(),
+                    'StatColor' => $pu->getStatColor()
                 ];
             }
 
@@ -65,6 +66,7 @@ class ApiController extends AbstractController
                     'PurchaseType' => $receipt->getPurchaseType()->getPurchaseName(),
                     'PurchaseAmount' => $receipt->getAmount(),
                     'PurchaseDate' => $receipt->getPurchaseDate()->format('d/m/Y'),
+                    'StatColor' => $receipt->getPurchaseType()->getStatColor(),
                 ];
             }
         }
