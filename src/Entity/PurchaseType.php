@@ -21,6 +21,7 @@ class PurchaseType
      */
     private $PurchaseName;
 
+
     /**
      * @ORM\Column(type="string", length=10)
      */
@@ -62,5 +63,13 @@ class PurchaseType
         $this->StatColor = $StatColor;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPurchaseOrder()
+    {
+        return $this->PurchaseOrder;
     }
 }

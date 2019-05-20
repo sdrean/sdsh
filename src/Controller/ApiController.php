@@ -31,7 +31,7 @@ class ApiController extends AbstractController
     public function getInit(EntityManagerInterface $em)
     {
         $ptUtil = $em->getRepository('App\\Entity\\PurchaseType');
-        $all = $ptUtil->findAll();
+        $all = $ptUtil->findBy([],['PurchaseOrder' => 'ASC']);
 
         sleep(1);
 
