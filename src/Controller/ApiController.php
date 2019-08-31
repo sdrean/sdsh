@@ -33,8 +33,6 @@ class ApiController extends AbstractController
         $ptUtil = $em->getRepository('App\\Entity\\PurchaseType');
         $all = $ptUtil->findBy([],['PurchaseOrder' => 'ASC']);
 
-        sleep(1);
-
         $returnPT = [
             [
                 'PurchaseTypeId' => 0,
@@ -74,11 +72,19 @@ class ApiController extends AbstractController
         $walletUtil = $em->getRepository('App\\Entity\\Wallet');
         $amount = $walletUtil->findByMonth(date('Y-m'));
 
+        // Zone retreiving
+        $zones = $em->getRepository('App\\Entity\\Zone')->findAllForJson();
+
+        // Product retreiving
+        $products = $em->getRepository('App\\Entity\\Product')->findAllForJson();
+
         return new JsonResponse([
             'valid' => true,
             'purchaseTypes' => $returnPT,
             'receipt' => $returnReceipt,
-            'walletAmount' => $amount
+            'walletAmount' => $amount,
+            'zones' => $zones,
+            'products' => $products,
         ]);
     }
 
