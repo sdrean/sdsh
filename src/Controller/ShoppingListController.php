@@ -5,6 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\Product;
+use App\Entity\ShoppingList;
+use App\Entity\ShoppingListItem;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -119,6 +121,49 @@ class ShoppingListController extends AbstractController
                 'name' => $product->getName(),
                 'zone' => $product->getZone()->getId()
             ]
+        ]);
+    }
+
+    /**
+     * @Route("/shopping-list/current")
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function getCurrentList(EntityManagerInterface $em)
+    {
+        $shoppingListUtil = $em->getRepository('App\\Entity\\ShoppingList');
+        $currentList = $shoppingListUtil->findCurrentList();
+        if($currentList == null){
+            $currentList = new ShoppingList();
+            $currentList->setStatus('OPEN');
+            $currentList->setUpdateDate(new \DateTime());
+            $currentList->setCreateDate(new \DateTime());
+            $em->persist($currentList);
+            $em->flush();
+        }
+
+        $items = $em->getRepository('App\\Entity\\ShoppingListItem')->findCurrentListItem($currentList);
+
+        $return  = [
+            'id' => $currentList->getId(),
+            'status' => $currentList->getStatus(),
+            'items' => []
+        ];
+
+        if(count($items) > 0){
+            /** @var ShoppingListItem $item */
+            foreach ($items as $item){
+                $return['items'][] = [
+                    'id' => $item->getId(),
+                    'product' => $item->getProduct()->getName()
+                ];
+            }
+        }
+
+        return new JsonResponse([
+            'valid' => true,
+            'result' => $return
         ]);
     }
 
