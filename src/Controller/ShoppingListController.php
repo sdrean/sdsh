@@ -161,9 +161,13 @@ class ShoppingListController extends AbstractController
             }
         }
 
+        // Product retreiving
+        $products = $em->getRepository('App\\Entity\\Product')->findAllForJson();
+
         return new JsonResponse([
             'valid' => true,
-            'result' => $return
+            'products' => $products,
+            'shoppingList' => $return
         ]);
     }
 
