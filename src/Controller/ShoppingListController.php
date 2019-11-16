@@ -164,9 +164,13 @@ class ShoppingListController extends AbstractController
         // Product retreiving
         $products = $em->getRepository('App\\Entity\\Product')->findAllForJson();
 
+        // Zone retreiving
+        $zones = $em->getRepository('App\\Entity\\Zone')->findAllForJson();
+
         return new JsonResponse([
             'valid' => true,
             'products' => $products,
+            'zones' => $zones,
             'shoppingList' => $return
         ]);
     }
