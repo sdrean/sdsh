@@ -7,6 +7,9 @@ use App\Entity\Device;
 use App\Entity\Point;
 use App\Entity\PurchaseType;
 use App\Entity\Receipt;
+use App\Entity\ShoppingList;
+use App\Entity\ShoppingListItem;
+use App\Service\ShoppingListManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Psr\Log\LoggerInterface;
@@ -28,7 +31,7 @@ class ApiController extends AbstractController
      * @param EntityManagerInterface $em
      * @return JsonResponse
      */
-    public function getInit(EntityManagerInterface $em)
+    public function getInit(EntityManagerInterface $em, ShoppingListManager $shoppingListManager)
     {
         $ptUtil = $em->getRepository('App\\Entity\\PurchaseType');
         $all = $ptUtil->findBy([],['PurchaseOrder' => 'ASC']);
@@ -78,6 +81,9 @@ class ApiController extends AbstractController
         // Product retreiving
         $products = $em->getRepository('App\\Entity\\Product')->findAllForJson();
 
+        // Current shopping list
+        $shoppingList = $shoppingListManager->retreiveCurrentList();
+
         return new JsonResponse([
             'valid' => true,
             'purchaseTypes' => $returnPT,
@@ -85,6 +91,7 @@ class ApiController extends AbstractController
             'walletAmount' => $amount,
             'zones' => $zones,
             'products' => $products,
+            'shoppingList' => $shoppingList,
         ]);
     }
 
