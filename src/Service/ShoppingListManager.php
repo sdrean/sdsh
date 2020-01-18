@@ -27,8 +27,8 @@ class ShoppingListManager
             $currentList->setStatus('OPEN');
             $currentList->setUpdateDate(new \DateTime());
             $currentList->setCreateDate(new \DateTime());
-            $em->persist($currentList);
-            $em->flush();
+            $this->em->persist($currentList);
+            $this->em->flush();
         }
 
         $items = $this->em->getRepository('App\\Entity\\ShoppingListItem')->findCurrentListItem($currentList);
@@ -39,15 +39,21 @@ class ShoppingListManager
             'items' => []
         ];
 
+
+        $itemList = [];
         if(count($items) > 0){
             /** @var ShoppingListItem $item */
             foreach ($items as $item){
-                $return['items'][] = [
+                $itemList[str_pad($item->getProduct()->getZone()->getOrder(),10,'0',STR_PAD_LEFT).'-'.$item->getProduct()->getName()] = [
                     'id' => $item->getId(),
-                    'product' => $item->getProduct()->getName()
+                    'product' => $item->getProduct()->getName(),
+                    'zoneIconId' => $item->getProduct()->getZone()->getId()
                 ];
             }
+            ksort($itemList);
+            $return['items'] = array_values($itemList);
         }
+
 
         return $return;
     }
