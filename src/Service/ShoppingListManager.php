@@ -47,7 +47,7 @@ class ShoppingListManager
                 $itemList[str_pad($item->getProduct()->getZone()->getOrder(),10,'0',STR_PAD_LEFT).'-'.$item->getProduct()->getName()] = [
                     'id' => $item->getId(),
                     'product' => $item->getProduct()->getName(),
-                    'zoneIconId' => $item->getProduct()->getZone()->getId()
+                    'zoneId' => $item->getProduct()->getZone()->getId()
                 ];
             }
             ksort($itemList);
