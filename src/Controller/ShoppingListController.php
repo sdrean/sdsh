@@ -175,9 +175,46 @@ class ShoppingListController extends AbstractController
         ]);
     }
 
-    public function addToList(Request $request)
+    /**
+     * @Route("/shopping-list/product/add")
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addToList(EntityManagerInterface $em, Request $request)
     {
+        $params = array();
+        $content = $request->getContent();
 
+        if (!empty($content)) {
+            $params = json_decode($content, true);
+        }
+
+        if (!array_key_exists('shoppingListId',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing shopping list parameter"]);
+        }
+
+        if (!array_key_exists('productId',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing product parameter"]);
+        }
+
+        $shoppingList = $em->getRepository('App\\Entity\\ShoppingList')->find($params['shoppingListId']);
+        $product = $em->getRepository('App\\Entity\\Product')->find($params['productId']);
+
+        $shoppingListItem = new ShoppingListItem();
+        $shoppingListItem->setStatus('NEW');
+        $shoppingListItem->setShoppingList($shoppingList);
+        $shoppingListItem->setProduct($product);
+        $em->persist($shoppingListItem);
+        $em->flush();
+
+        return new JsonResponse([
+            'valid' => true,
+            'result' => [
+                'id' => $product->getId(),
+                'name' => $product->getName()
+            ]
+        ]);
     }
 
     public function removeToList(Request $request)
