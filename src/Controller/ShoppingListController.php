@@ -190,24 +190,18 @@ class ShoppingListController extends AbstractController
             $params = json_decode($content, true);
         }
 
-        if (!array_key_exists('shoppingListId',$params)) {
-            return new JsonResponse(["valid" => false, "error" => "Missing shopping list parameter"]);
+        if (!array_key_exists('shoppingListItemId',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing shopping list item parameter"]);
         }
 
-        if (!array_key_exists('productId',$params)) {
-            return new JsonResponse(["valid" => false, "error" => "Missing product parameter"]);
-        }
-
-        $shoppingList = $em->getRepository('App\\Entity\\ShoppingList')->find($params['shoppingListId']);
-        $product = $em->getRepository('App\\Entity\\Product')->find($params['productId']);
-
-        /** @var ShoppingListItem $shoppingListItem */
         $shoppingListItem = $em
             ->getRepository('App\\Entity\\ShoppingListItem')
-            ->findOneBy([
-                'product' => $product,
-                'shoppingList' => $shoppingList
-            ]);
+            ->find($params['shoppingListItemId']);
+
+        if($shoppingListItem == null){
+            return new JsonResponse(["valid" => false, "error" => "Shopping list item not found"]);
+        }
+
         $em->remove($shoppingListItem);
         $em->flush();
 
