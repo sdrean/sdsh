@@ -209,6 +209,8 @@ class ShoppingListController extends AbstractController
                 'shoppingList' => $shoppingList
             ]);
         $em->remove($shoppingListItem);
+        $em->flush();
+
         return new JsonResponse(['valid' => true]);
     }
 
