@@ -176,6 +176,43 @@ class ShoppingListController extends AbstractController
     }
 
     /**
+     * @Route("/shopping-list/product/remove")
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function removeFromList(EntityManagerInterface $em, Request $request)
+    {
+        $params = array();
+        $content = $request->getContent();
+
+        if (!empty($content)) {
+            $params = json_decode($content, true);
+        }
+
+        if (!array_key_exists('shoppingListId',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing shopping list parameter"]);
+        }
+
+        if (!array_key_exists('productId',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing product parameter"]);
+        }
+
+        $shoppingList = $em->getRepository('App\\Entity\\ShoppingList')->find($params['shoppingListId']);
+        $product = $em->getRepository('App\\Entity\\Product')->find($params['productId']);
+
+        /** @var ShoppingListItem $shoppingListItem */
+        $shoppingListItem = $em
+            ->getRepository('App\\Entity\\ShoppingListItem')
+            ->findOneBy([
+                'product' => $product,
+                'shoppingList' => $shoppingList
+            ]);
+        $em->remove($shoppingListItem);
+        return new JsonResponse(['valid' => true]);
+    }
+
+    /**
      * @Route("/shopping-list/product/add")
      * @param EntityManagerInterface $em
      * @param Request $request
