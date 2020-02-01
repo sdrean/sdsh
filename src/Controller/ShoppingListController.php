@@ -232,6 +232,7 @@ class ShoppingListController extends AbstractController
         }
 
         $shoppingList = $em->getRepository('App\\Entity\\ShoppingList')->find($params['shoppingListId']);
+        /** @var Product $product */
         $product = $em->getRepository('App\\Entity\\Product')->find($params['productId']);
 
         $shoppingListItem = new ShoppingListItem();
@@ -245,7 +246,8 @@ class ShoppingListController extends AbstractController
             'valid' => true,
             'result' => [
                 'id' => $product->getId(),
-                'name' => $product->getName()
+                'product' => $product->getName(),
+                'zoneId' => $product->getZone()->getId()
             ]
         ]);
     }
