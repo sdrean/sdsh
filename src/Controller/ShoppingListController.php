@@ -205,7 +205,7 @@ class ShoppingListController extends AbstractController
         $em->remove($shoppingListItem);
         $em->flush();
 
-        return new JsonResponse(['valid' => true]);
+        return new JsonResponse(['valid' => true, 'result' => 'OK']);
     }
 
     /**
