@@ -44,10 +44,12 @@ class ShoppingListManager
         if(count($items) > 0){
             /** @var ShoppingListItem $item */
             foreach ($items as $item){
-                $itemList[str_pad($item->getProduct()->getZone()->getOrder(),10,'0',STR_PAD_LEFT).'-'.$item->getProduct()->getName()] = [
+                $order = str_pad($item->getProduct()->getZone()->getOrder(),10,'0',STR_PAD_LEFT).'-'.$item->getProduct()->getName();
+                $itemList[$order] = [
                     'id' => $item->getId(),
                     'product' => $item->getProduct()->getName(),
-                    'zoneId' => $item->getProduct()->getZone()->getId()
+                    'zoneId' => $item->getProduct()->getZone()->getId(),
+                    'order' => $order
                 ];
             }
             ksort($itemList);

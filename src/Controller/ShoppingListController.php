@@ -242,12 +242,16 @@ class ShoppingListController extends AbstractController
         $em->persist($shoppingListItem);
         $em->flush();
 
+        $order = str_pad($shoppingListItem->getProduct()->getZone()->getOrder(),10,'0',STR_PAD_LEFT).
+            '-'.$shoppingListItem->getProduct()->getName();
+
         return new JsonResponse([
             'valid' => true,
             'result' => [
                 'id' => $product->getId(),
                 'product' => $product->getName(),
-                'zoneId' => $product->getZone()->getId()
+                'zoneId' => $product->getZone()->getId(),
+                'order' => $order
             ]
         ]);
     }
