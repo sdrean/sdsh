@@ -256,13 +256,43 @@ class ShoppingListController extends AbstractController
         ]);
     }
 
-    public function removeToList(Request $request)
+    /**
+     * @Route("/shopping-list/product/status")
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeStatus(EntityManagerInterface $em, Request $request)
     {
+        $params = array();
+        $content = $request->getContent();
 
-    }
+        if (!empty($content)) {
+            $params = json_decode($content, true);
+        }
 
-    public function createNewList()
-    {
+        if (!array_key_exists('shoppingListItemId',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing shopping list parameter"]);
+        }
 
+        if (!array_key_exists('status',$params)) {
+            return new JsonResponse(["valid" => false, "error" => "Missing new status for product parameter"]);
+        }
+
+        /** @var ShoppingListItem $shoppingListItem */
+        $shoppingListItem = $em
+            ->getRepository('App\\Entity\\ShoppingListItem')
+            ->find($params['shoppingListItemId']);
+
+        if($shoppingListItem == null){
+            return new JsonResponse(["valid" => false, "error" => "Shopping list item not found"]);
+        }
+
+        $shoppingListItem->setStatus($params['status']);
+
+        $em->persist($shoppingListItem);
+        $em->flush();
+
+        return new JsonResponse(["valid" => true, "result" => $params['status']]);
     }
 }
