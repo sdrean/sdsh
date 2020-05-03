@@ -49,6 +49,7 @@ class ShoppingListManager
                     'id' => $item->getId(),
                     'product' => $item->getProduct()->getName(),
                     'zoneId' => $item->getProduct()->getZone()->getId(),
+                    'status' => $item->getStatus(),
                     'order' => $order
                 ];
             }
