@@ -251,6 +251,7 @@ class ShoppingListController extends AbstractController
                 'id' => $product->getId(),
                 'product' => $product->getName(),
                 'zoneId' => $product->getZone()->getId(),
+                'status' => $shoppingListItem->getStatus(),
                 'order' => $order
             ]
         ]);
